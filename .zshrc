@@ -1,5 +1,5 @@
 # Set default oh-my-zsh as ZSH
-export ZSH="/home/vgsantoniazzi/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set Theme
 ZSH_THEME="vgsantoniazzi"
@@ -25,7 +25,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # Add custom aliases to PATH
-source "$HOME/.projects.aliases.sh"
+source "$HOME/.env.aliases.sh"
 source "$HOME/.git.aliases.sh"
 
 # emacs mapping terminal
