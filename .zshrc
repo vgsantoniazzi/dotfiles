@@ -25,7 +25,11 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # Add custom aliases to PATH
+<<<<<<< HEAD
 source "$HOME/.env.aliases.sh"
+=======
+source "$HOME/.projects.aliases.sh"
+>>>>>>> First commit.
 source "$HOME/.git.aliases.sh"
 
 # emacs mapping terminal
