@@ -42,7 +42,7 @@
  '(org-agenda-files (quote ("~/Documents/Todo.org")))
  '(package-selected-packages
    (quote
-    (poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
+    (slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
