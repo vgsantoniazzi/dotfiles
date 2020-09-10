@@ -1,0 +1,10 @@
+[user]
+	name = Victor Antoniazzi
+	email = vgsantoniazzi@gmail.com
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[push]
+	default = current
+[core]
+	excludesfile = /home/vgsantoniazzi/.gitignore
+	editor = emacs -nw

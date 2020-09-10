@@ -1,0 +1,14 @@
+# Ruby debugger/binding.pry
+app/.byebug_history
+.byebug_history
+*.byebug_history
+
+# Emacs auto-save files
+\#*\#
+.\#*
+
+# Emacs configuration
+.emacs.d/elpa
+.emacs.d/auto-save-list
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/recentf
