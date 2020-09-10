@@ -8,3 +8,5 @@
 [core]
 	excludesfile = /home/vgsantoniazzi/.gitignore
 	editor = emacs -nw
+[commit]
+	template = /home/vgsantoniazzi/.gitmessage
