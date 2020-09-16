@@ -93,6 +93,9 @@
 (setq backup-directory-alist'(("." . "~/.emacs_saves")))
 (setq auto-save-file-name-transforms'((".*" "~/.emacs_saves/" t)))
 
+;; Set Directory to keep Agenda/Org-mode files
+(setq org-agenda-files '("~/Notes"))
+
 ;; Do not use tabs. Always translate to spaces.
 (setq-default indent-tabs-mode nil)
 
