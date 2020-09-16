@@ -4,13 +4,6 @@
 ;; Disable whitespace mode for orgmode
 (setq whitespace-global-modes '(not org-mode))
 
-;; ;;Update theme before loading it
-;; (setq zenburn-override-colors-alist
-;;     '(("zenburn-bg" . "#1C1C1C")
-;;       ("zenburn-bg-05"  . "#1C1C1C")
-;; ;;    ("zenburn-fg" . "#839496")
-;;       ("zenburn-bg+1"  . "#1C1C1C")))
-
 ;; Variables set by emacs client
 ;; Change it carefully by hand
 (custom-set-variables
