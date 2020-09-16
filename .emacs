@@ -93,6 +93,9 @@
 (setq backup-directory-alist'(("." . "~/.emacs_saves")))
 (setq auto-save-file-name-transforms'((".*" "~/.emacs_saves/" t)))
 
+;; Do not use tabs. Always translate to spaces.
+(setq-default indent-tabs-mode nil)
+
 ;; Hook to always remove trailing whitespace when saving
 ;; the file. It helps to keep nice and useful files.
 ;; industry-standard to keep everything clear and easy to review
