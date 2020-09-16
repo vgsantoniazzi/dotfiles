@@ -136,8 +136,8 @@
 ;; org-bullets
 (require 'org-bullets)
 (add-hook 'org-mode-hook (
-			  lambda ()
-			  (org-bullets-mode 1)))
+                          lambda ()
+                          (org-bullets-mode 1)))
 
 ;; Helm package config
 (global-set-key (kbd "M-x") #'helm-M-x)
