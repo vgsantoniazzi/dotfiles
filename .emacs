@@ -35,7 +35,7 @@
  '(org-agenda-files (quote ("~/Documents/Todo.org")))
  '(package-selected-packages
    (quote
-    (slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
+    (web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -84,7 +84,10 @@
 ;; Disable bell
 (setq ring-bell-function 'ignore)
 
-;; mwheel config
+;; Auto-revert mode: Reload file if git chaged the buffer
+(setq global-auto-revert-mode t)
+
+;; imwheel config
 (global-set-key (kbd "C-M-(") (kbd "<mouse-4>"))
 (global-set-key (kbd "C-M-)") (kbd "<mouse-5>"))
 
@@ -144,6 +147,14 @@
 (global-set-key (kbd "C-c f") #'helm-projectile-ag)
 (global-set-key (kbd "C-c t") #'helm-projectile-find-file-dwim)
 (global-set-key (kbd "C-x C-b") #'helm-mini)
+
+;; web-mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js[x]\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ts[x]\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.slim\\'" . web-mode))
 
 ;;;;;;;;;;;;;;;;;;;; Custom functions ;;;;;;;;;;;;;;;;;;;;
 
