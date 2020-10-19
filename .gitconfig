@@ -10,3 +10,5 @@
 	editor = emacs -nw
 [commit]
 	template = /home/vgsantoniazzi/.gitmessage
+[diff]
+	colormoved = default
