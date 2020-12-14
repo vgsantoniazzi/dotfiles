@@ -35,7 +35,7 @@
  '(org-agenda-files (quote ("~/Documents/Todo.org")))
  '(package-selected-packages
    (quote
-    (web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
+    (elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -101,6 +101,13 @@
 
 ;; Do not use tabs. Always translate to spaces.
 (setq-default indent-tabs-mode nil)
+
+;; Set 2 indent levels
+(setq js-indent-level 2)
+(setq-default c-basic-offset 2)
+(setq c-basic-offset 2)
+(setq-default tab-width 2)
+(setq-default c-basic-indent 2)
 
 ;; Hook to always remove trailing whitespace when saving
 ;; the file. It helps to keep nice and useful files.
