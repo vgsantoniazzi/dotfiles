@@ -10,5 +10,6 @@
 	editor = emacs -nw
 [commit]
 	template = /home/vgsantoniazzi/.gitmessage
+	gpgsign = true
 [diff]
 	colormoved = default
