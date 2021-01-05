@@ -28,6 +28,13 @@ eval "$(pyenv virtualenv-init -)"
 source "$HOME/.env.aliases.sh"
 source "$HOME/.projects.aliases.sh"
 source "$HOME/.git.aliases.sh"
+source "$HOME/.docker.aliases.sh"
+
+# Add Rust to PATH
+source "$HOME/.cargo/env"
+
+# Add tfenv
+export PATH="$HOME/.tfenv/bin:$PATH"
 
 # emacs mapping terminal
 bindkey -e

@@ -35,7 +35,7 @@
  '(org-agenda-files (quote ("~/Documents/Todo.org")))
  '(package-selected-packages
    (quote
-    (elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
+    (rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -86,10 +86,6 @@
 
 ;; Auto-revert mode: Reload file if git chaged the buffer
 (setq global-auto-revert-mode t)
-
-;; imwheel config
-(global-set-key (kbd "C-M-(") (kbd "<mouse-4>"))
-(global-set-key (kbd "C-M-)") (kbd "<mouse-5>"))
 
 ;; Avoid creating #file# or file.rb~ inside the current
 ;; directory. Keep all emacs stuff inside this folder
@@ -162,6 +158,9 @@
 (add-to-list 'auto-mode-alist '("\\.ts[x]\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.slim\\'" . web-mode))
+
+;; Rust mode
+(require 'rust-mode)
 
 ;;;;;;;;;;;;;;;;;;;; Custom functions ;;;;;;;;;;;;;;;;;;;;
 
