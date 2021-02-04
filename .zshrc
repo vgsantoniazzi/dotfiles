@@ -39,6 +39,8 @@ export PATH="$HOME/.tfenv/bin:$PATH"
 # Add Rust to PATH
 source "$HOME/.cargo/env"
 
+export PATH="$HOME/.tfenv/bin:$PATH"
+
 # emacs mapping terminal
 bindkey -e
 

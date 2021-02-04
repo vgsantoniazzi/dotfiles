@@ -172,3 +172,6 @@
       (interactive)
       (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "C-x q") 'kill-other-buffers)
+
+;; MacOSX requires for helm-ag
+(add-to-list 'exec-path "/usr/local/bin/")

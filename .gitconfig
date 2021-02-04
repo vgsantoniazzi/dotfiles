@@ -6,10 +6,10 @@
 [push]
 	default = current
 [core]
-	excludesfile = /home/vgsantoniazzi/.gitignore
+	excludesfile = ~/.gitignore
 	editor = emacs -nw
 [commit]
-	template = /home/vgsantoniazzi/.gitmessage
+	template = ~/.gitmessage
 	gpgsign = true
 [diff]
 	colormoved = default
