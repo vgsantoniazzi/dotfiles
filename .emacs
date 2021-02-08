@@ -118,7 +118,7 @@
 ;; Default Emacs is too little and we always need to
 ;; resize manually
 (setq default-frame-alist
-      '((width . 150) (height . 50)))
+      '((width . 300) (height . 80)))
 
 ;;;;;;;;;;;;;;;;;;;; Package loader ;;;;;;;;;;;;;;;;;;;;
 
