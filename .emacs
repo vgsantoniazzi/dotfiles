@@ -85,7 +85,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; Auto-revert mode: Reload file if git chaged the buffer
-(setq global-auto-revert-mode t)
+(global-auto-revert-mode t)
 
 ;; Avoid creating #file# or file.rb~ inside the current
 ;; directory. Keep all emacs stuff inside this folder
