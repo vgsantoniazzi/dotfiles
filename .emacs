@@ -40,6 +40,7 @@
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
+ '(tab-width 2)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(vc-annotate-background nil)
@@ -100,6 +101,7 @@
 
 ;; Set 2 indent levels
 (setq js-indent-level 2)
+(setq javascript-indent-level 2)
 (setq-default c-basic-offset 2)
 (setq c-basic-offset 2)
 (setq-default tab-width 2)
@@ -158,7 +160,9 @@
 (add-to-list 'auto-mode-alist '("\\.js[x]\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ts[x]\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.slim\\'" . web-mode))
+
+;; Slim mode
+(require 'slim-mode)
 
 ;; Rust mode
 (require 'rust-mode)
