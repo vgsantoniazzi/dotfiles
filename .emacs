@@ -106,6 +106,10 @@
 (setq c-basic-offset 2)
 (setq-default tab-width 2)
 (setq-default c-basic-indent 2)
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+
 
 ;; Hook to always remove trailing whitespace when saving
 ;; the file. It helps to keep nice and useful files.
