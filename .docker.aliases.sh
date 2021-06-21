@@ -2,6 +2,8 @@ alias dc="docker-compose"
 
 alias dcr="docker-compose run --rm"
 
+alias k="kubectl"
+
 docker_clean(){
   docker rm $(docker ps --all -q -f status=exited)
 }
