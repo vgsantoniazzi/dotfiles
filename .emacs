@@ -1,6 +1,3 @@
-;; Load all themes inside a folder
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-
 ;; Disable whitespace mode for orgmode
 (setq whitespace-global-modes '(not org-mode))
 
@@ -18,10 +15,6 @@
  '(column-number-mode t)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
- '(custom-enabled-themes (quote (material)))
- '(custom-safe-themes
-   (quote
-    ("d27829b2d1ba43d1e3c0a5a1e0341ebaec65b81ac029cd9d28ae8d03135eb26b" "8db43a8d70fa7a1d2cdf72f1f05d731b93189869fdf1884b1dbc673a692dd1d1" "2c6e6007c25f2470ec86ef37338ebf6c24c1a762cd8a27d6cd173ebeeada0e57" "6f88853dc50c6577367b8c90a147f99ea08ccf3e59942de9c5af853e16729a30" "aceaee2087a372e0264323f0757e1bebb47baa628cebe977eb0eb0fa3f372646" "fb2c4f5a893d1e83d39a5365334810c84bd11f906c034420c73a9ee9c4351f0c" "1bb74b2cc048ea0520db04083164fc6ae1aa32f71f516fd66a2be09f06c941b7" "2d035eb93f92384d11f18ed00930e5cc9964281915689fa035719cab71766a15" "f490984d405f1a97418a92f478218b8e4bcc188cf353e5dd5d5acd2f8efd0790" "28a104f642d09d3e5c62ce3464ea2c143b9130167282ea97ddcc3607b381823f" "afd761c9b0f52ac19764b99d7a4d871fc329f7392dfc6cd29710e8209c691477" "d4f8fcc20d4b44bf5796196dbeabec42078c2ddb16dcb6ec145a1c610e0842f3" "0f0a885f4ce5b6f97e33c7483bfe4515220e9cbd9ab3ca798e0972f665f8ee4d" default)))
  '(display-line-numbers-type (quote relative))
  '(fci-rule-color "#ECEFF1")
  '(font-use-system-font t)
@@ -35,7 +28,7 @@
  '(org-agenda-files (quote ("~/Documents/Todo.org")))
  '(package-selected-packages
    (quote
-    (rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
+    (zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -135,7 +128,7 @@
 (package-initialize)
 
 ;; Enable theme
-(load-theme 'material t)
+(load-theme 'gruvbox t)
 
 ;; Support project file finder, grep under emacs and a bunch of other stuff
 (projectile-mode +1)
