@@ -78,6 +78,10 @@
 ;; Disable bell
 (setq ring-bell-function 'ignore)
 
+;; Mouse scrolling
+(global-set-key (kbd "C-M-(") (kbd "<mouse-4>"))
+(global-set-key (kbd "C-M-)") (kbd "<mouse-5>"))
+
 ;; Auto-revert mode: Reload file if git chaged the buffer
 (global-auto-revert-mode t)
 
