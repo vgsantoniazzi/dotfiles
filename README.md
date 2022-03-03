@@ -23,6 +23,13 @@ $ dotfiles checkout
 - [Imwheelrc](http://imwheel.sourceforge.net/)
 - [RVM](https://rvm.io/), [NVM](https://github.com/nvm-sh/nvm) and [Pyenv](https://github.com/pyenv/pyenv)
 
+
+## Apply terminal colors
+
+```
+gconftool-2 --load ./dotfiles-config/gnome-terminal-conf.xml
+```
+
 ## Documentation
 
 If I don’t know why it’s there it will be removed. I normally tend to forget things in the long run, so documentation here will be the key.
