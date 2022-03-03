@@ -27,7 +27,7 @@ $ dotfiles checkout
 ## Apply terminal colors
 
 ```
-gconftool-2 --load ./dotfiles-config/gnome-terminal-conf.xml
+dconf load /org/gnome/terminal/legacy/profiles:/ < ~/.dotfiles-config/gnome-terminal-conf.xml
 ```
 
 ## Documentation
