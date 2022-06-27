@@ -6,7 +6,7 @@
 [push]
 	default = current
 [core]
-	excludesfile = ~/.gitignore
+	excludesFile = ~/.gitignore
 	editor = emacs -nw
 [commit]
 	template = ~/.gitmessage

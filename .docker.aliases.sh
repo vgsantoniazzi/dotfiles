@@ -2,16 +2,15 @@ alias dc="docker-compose"
 
 alias dcr="docker-compose run --rm"
 
+alias kubectl="minikube kubectl --"
 alias k="kubectl"
 
 docker__clean() {
     echo "Stopping containers.."
-    result=$(docker ps -a -q)
-    [[ ! -z "$result" ]] && docker stop "$result"
+    [[ ! -z $(docker ps -a -q) ]] && docker stop $(docker ps -a -q)
 
     echo "Removing containers.."
-    result=$(docker ps --all -q -f status=exited)
-    [[ ! -z "$result" ]] && docker rm result
+    [[ ! -z $(docker ps --all -q -f status=exited) ]] && docker rm $(docker ps --all -q -f status=exited)
 
     echo "Removing images.."
     for image in "$@"
@@ -21,8 +20,7 @@ docker__clean() {
     done
 
     echo "Removing dangling images.."
-    result=$(docker images -f "dangling=true" -q)
-    [[ ! -z "$result" ]] && docker rmi -f result
+    [[ ! -z $(docker images -f "dangling=true" -q) ]] && docker rmi -f $(docker images -f "dangling=true" -q)
     echo "Done!"
 }
 
