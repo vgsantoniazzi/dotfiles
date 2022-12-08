@@ -41,6 +41,9 @@ source "$HOME/.cargo/env"
 
 export PATH="$HOME/.tfenv/bin:$PATH"
 
+# Source kiex (elixir)
+source "$HOME/.kiex/scripts/kiex"
+
 # emacs mapping terminal
 bindkey -e
 

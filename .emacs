@@ -15,7 +15,7 @@
  '(column-number-mode t)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
- '(display-line-numbers-type (quote relative))
+ '(display-line-numbers-type 'relative)
  '(fci-rule-color "#ECEFF1")
  '(font-use-system-font t)
  '(global-display-line-numbers-mode t)
@@ -23,13 +23,11 @@
  '(hl-sexp-background-color "#1c1f26")
  '(line-spacing 0.2)
  '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(org-agenda-files (quote ("~/Documents/Todo.org")))
+   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
+ '(org-agenda-files '("~/Documents/Todo.org"))
  '(package-selected-packages
-   (quote
-    (zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+   '(browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile))
+ '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
@@ -38,8 +36,7 @@
  '(tooltip-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#f36c60")
+   '((20 . "#f36c60")
      (40 . "#ff9800")
      (60 . "#fff59d")
      (80 . "#8bc34a")
@@ -56,7 +53,7 @@
      (300 . "#f36c60")
      (320 . "#ff9800")
      (340 . "#fff59d")
-     (360 . "#8bc34a"))))
+     (360 . "#8bc34a")))
  '(vc-annotate-very-old-color nil)
  '(whitespace-line-column 9999))
 
@@ -181,3 +178,6 @@
 
 ;; MacOSX requires for helm-ag
 (add-to-list 'exec-path "/usr/local/bin/")
+
+;; Add the browse-at-remote to open github links from code
+(global-set-key (kbd "C-c g g") 'browse-at-remote)
