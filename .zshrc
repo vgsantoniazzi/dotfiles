@@ -24,6 +24,10 @@ export PATH="/home/vgsantoniazzi/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+# Fly
+export FLYCTL_INSTALL="/home/vgsantoniazzi/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 # Add custom aliases to PATH
 source "$HOME/.env.aliases.sh"
 source "$HOME/.projects.aliases.sh"
