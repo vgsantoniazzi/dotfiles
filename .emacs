@@ -26,7 +26,7 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-agenda-files '("~/Documents/Todo.org"))
  '(package-selected-packages
-   '(browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile))
+   '(company dash s use-package editorconfig browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -128,6 +128,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+
 ;; Enable theme
 (load-theme 'gruvbox t)
 
@@ -181,3 +182,49 @@
 
 ;; Add the browse-at-remote to open github links from code
 (global-set-key (kbd "C-c g g") 'browse-at-remote)
+
+;; Use github copilot
+(use-package copilot
+  :load-path (lambda () (expand-file-name "copilot.el" user-emacs-directory))
+  ;; don't show in mode line
+  :diminish)
+
+;; Set path for node
+(setq exec-path (append exec-path '("~/.nvm/versions/node/v18.15.0/bin")))
+
+;; custom keys for copilot
+(defun vgsa/copilot-complete-or-accept ()
+  "Command that either triggers a completion or accepts one if one
+is available. Useful if you tend to hammer your keys like I do."
+  (interactive)
+  (if (copilot--overlay-visible)
+      (progn
+        (copilot-accept-completion)
+        (open-line 1)
+        (next-line))
+    (copilot-complete)))
+
+(defun vgsa/copilot-quit ()
+  "Run `copilot-clear-overlay' or `keyboard-quit'. If copilot is
+cleared, make sure the overlay doesn't come back too soon."
+  (interactive)
+  (condition-case err
+      (when copilot--overlay
+        (lexical-let ((pre-copilot-disable-predicates copilot-disable-predicates))
+          (setq copilot-disable-predicates (list (lambda () t)))
+          (copilot-clear-overlay)
+          (run-with-idle-timer
+           3.0
+           nil
+           (lambda ()
+             (setq copilot-disable-predicates pre-copilot-disable-predicates)))))
+    (error handler)))
+
+
+(define-key copilot-mode-map (kbd "C-<up>") #'copilot-next-completion)
+(define-key copilot-mode-map (kbd "C-<down>") #'copilot-previous-completion)
+(define-key copilot-mode-map (kbd "C-<right>") #'copilot-accept-completion-by-word)
+(define-key global-map (kbd "C-<tab>") #'vgsa/copilot-complete-or-accept)
+(advice-add 'keyboard-quit :before #'vgsa/copilot-quit)
+
+(global-copilot-mode)
