@@ -199,9 +199,7 @@ is available. Useful if you tend to hammer your keys like I do."
   (interactive)
   (if (copilot--overlay-visible)
       (progn
-        (copilot-accept-completion)
-        (open-line 1)
-        (next-line))
+        (copilot-accept-completion))
     (copilot-complete)))
 
 (defun vgsa/copilot-quit ()
@@ -221,9 +219,6 @@ cleared, make sure the overlay doesn't come back too soon."
     (error handler)))
 
 
-(define-key copilot-mode-map (kbd "C-<up>") #'copilot-next-completion)
-(define-key copilot-mode-map (kbd "C-<down>") #'copilot-previous-completion)
-(define-key copilot-mode-map (kbd "C-<right>") #'copilot-accept-completion-by-word)
 (define-key global-map (kbd "C-<tab>") #'vgsa/copilot-complete-or-accept)
 (advice-add 'keyboard-quit :before #'vgsa/copilot-quit)
 
