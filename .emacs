@@ -55,6 +55,7 @@
      (340 . "#fff59d")
      (360 . "#8bc34a")))
  '(vc-annotate-very-old-color nil)
+ '(warning-suppress-types '((comp) (comp)))
  '(whitespace-line-column 9999))
 
 ;;Variables set by emacs client
@@ -153,12 +154,10 @@
 (global-set-key (kbd "C-c t") #'helm-projectile-find-file-dwim)
 (global-set-key (kbd "C-x C-b") #'helm-mini)
 
-;; web-mode
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js[x]\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.ts[x]\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; webmode
+(add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ts[x]?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html[x]?\\'" . web-mode))
 
 ;; Slim mode
 (require 'slim-mode)

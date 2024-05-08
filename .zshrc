@@ -57,3 +57,5 @@ export TERM=screen-256color
 # EMACS as default editor
 export EDITOR="/usr/bin/emacs -nw"
 export VISUAL="/usr/bin/emacs"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
