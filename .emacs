@@ -26,7 +26,7 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-agenda-files '("~/Documents/Todo.org"))
  '(package-selected-packages
-   '(company dash s use-package editorconfig browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets helm-ag helm-projectile helm ruby-electric projectile))
+   '(quelpa-use-package quelpa helm-projectile helm-ag 0x0 company dash s use-package editorconfig browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets ruby-electric projectile))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -182,43 +182,30 @@
 ;; Add the browse-at-remote to open github links from code
 (global-set-key (kbd "C-c g g") 'browse-at-remote)
 
-;; Use github copilot
+(exec-path-from-shell-initialize)
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 (use-package copilot
-  :load-path (lambda () (expand-file-name "copilot.el" user-emacs-directory))
-  ;; don't show in mode line
-  :diminish)
-
-;; Set path for node
-(setq exec-path (append exec-path '("~/.nvm/versions/node/v18.15.0/bin")))
-
-;; custom keys for copilot
-(defun vgsa/copilot-complete-or-accept ()
-  "Command that either triggers a completion or accepts one if one
-is available. Useful if you tend to hammer your keys like I do."
-  (interactive)
-  (if (copilot--overlay-visible)
-      (progn
-        (copilot-accept-completion))
-    (copilot-complete)))
-
-(defun vgsa/copilot-quit ()
-  "Run `copilot-clear-overlay' or `keyboard-quit'. If copilot is
-cleared, make sure the overlay doesn't come back too soon."
-  (interactive)
-  (condition-case err
-      (when copilot--overlay
-        (lexical-let ((pre-copilot-disable-predicates copilot-disable-predicates))
-          (setq copilot-disable-predicates (list (lambda () t)))
-          (copilot-clear-overlay)
-          (run-with-idle-timer
-           3.0
-           nil
-           (lambda ()
-             (setq copilot-disable-predicates pre-copilot-disable-predicates)))))
-    (error handler)))
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :ensure t)
 
 
-(define-key global-map (kbd "C-<tab>") #'vgsa/copilot-complete-or-accept)
-(advice-add 'keyboard-quit :before #'vgsa/copilot-quit)
+(add-hook 'prog-mode-hook 'copilot-mode)
 
-(global-copilot-mode)
+(define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
