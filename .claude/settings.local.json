@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh search prs:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh api:*)"
+    ]
+  }
+}
