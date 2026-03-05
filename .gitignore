@@ -2,6 +2,7 @@
 app/.byebug_history
 .byebug_history
 *.byebug_history
+*.log
 
 # Emacs auto-save files
 \#*\#
@@ -12,3 +13,16 @@ app/.byebug_history
 .emacs.d/auto-save-list
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/recentf
+
+# Claude
+.claude/cache/
+.claude/debug/
+.claude/file-history/
+.claude/history.jsonl
+.claude/paste-cache/
+.claude/projects/
+.claude/shell-snapshots/
+.claude/todos/
+.claude/statsig/
+.claude/.credentials.json
+.claude/stats-cache.json
