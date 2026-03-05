@@ -1,6 +1,6 @@
 ---
 name: working-off-of-todo-files
-description: Work systematically through todo files. One task at a time, explicit status updates, wait for permission between tasks.
+description: Work systematically with ai-notes/**/*/todo.{md,txt} files. One task at a time, explicit status, user control.
 ---
 
 # Working Off Todo Files
@@ -46,7 +46,7 @@ Brief overview of what we're building and why
 2. Identify next uncompleted task (first `- [ ]`)
 3. Think through subtasks mentally (don't write them)
 4. Announce: "Starting Task N: [description]"
-5. Mark as in-progress: `- [ ]` → `- [/]`
+5. Mark as in-progress: `- [ ]` -> `- [/]`
 
 ### During Execution
 - Work systematically
@@ -58,7 +58,7 @@ Brief overview of what we're building and why
 1. Verify requirements met
 2. Run relevant tests
 3. Consider: rollback path? observability?
-4. Mark complete: `- [/]` → `- [x]`
+4. Mark complete: `- [/]` -> `- [x]`
 5. Add completion notes
 6. **STOP and wait for user**
 
@@ -69,32 +69,6 @@ Always state:
 - Any blockers
 - When complete
 - Request permission to continue
-
-```
-"Completed Task 2: Added retry logic to webhook delivery.
-Tests pass. Logging added for failed attempts.
-Should I proceed to Task 3?"
-```
-
-## Internal Workflow
-
-Follow these steps internally (don't add subtasks to the todo file):
-
-### Feature Implementation
-1. Understand requirements
-2. Check existing patterns
-3. Write tests first
-4. Implement
-5. Verify
-6. Consider operational needs
-
-### Bug Fix
-1. Reproduce with test
-2. Verify test fails
-3. Fix minimally
-4. Verify test passes
-5. Check for regressions
-6. Document root cause
 
 ## Operator Considerations
 

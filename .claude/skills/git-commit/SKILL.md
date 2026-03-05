@@ -100,7 +100,7 @@ npx eslint [changed files]
 npx eslint --fix [changed files]
 ```
 
-If linting reports offenses, fix them before committing. This prevents back-and-forth on style issues after the commit is made.
+If linting reports offenses, fix them before committing.
 
 ## Workflow
 

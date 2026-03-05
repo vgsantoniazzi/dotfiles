@@ -3,7 +3,12 @@
     "allow": [
       "Bash(gh search prs:*)",
       "Bash(gh pr list:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(brew list:*)",
+      "Bash(brew install:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh:*)"
     ]
   }
 }

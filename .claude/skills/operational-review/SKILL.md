@@ -1,6 +1,6 @@
 ---
 name: operational-review
-description: Assess operational burden of proposed changes. Consider maintenance, observability, debugging, and long-term ownership costs.
+description: Assess the operational burden of proposed changes. Who maintains this at 3am? How do we know it's broken?
 ---
 
 # Operational Review Skill

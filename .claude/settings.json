@@ -1,44 +1,4 @@
 {
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/vgsantoniazzi/.claude/hooks/claude-waiting.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/vgsantoniazzi/.claude/hooks/claude-working.sh"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/vgsantoniazzi/.claude/hooks/claude-waiting.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/vgsantoniazzi/.claude/hooks/claude-working.sh"
-          }
-        ]
-      }
-    ]
-  }
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "high"
 }
