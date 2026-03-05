@@ -70,7 +70,12 @@ Save reflection documents as `YYYY-MM-reflection-N.md` in `~/.claude/memory/refl
 - [Pattern]: [Evidence from N entries]
 
 ## Proposed CLAUDE.md Updates
+```markdown
 [New or updated rules - brief, actionable]
+```
+
+## Anti-Patterns to Flag
+- [Things that consistently caused problems]
 ```
 
 ## Processing Log Format
@@ -79,6 +84,3 @@ Track analyzed entries in `processed.log`:
 ```
 [diary-filename] | [reflection-date] | [reflection-filename]
 ```
-
-## Anti-Patterns to Flag
-- Things that consistently caused problems

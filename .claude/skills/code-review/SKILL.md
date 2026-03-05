@@ -1,43 +1,135 @@
 ---
 name: code-review
-description: Systematic code review examining correctness, security, performance, maintainability, and testing. Operator-mindset focused.
+description: Review pull requests, diffs, and uncommitted changes. Provides structured feedback on code quality, security, operational concerns, and best practices.
 ---
 
 # Code Review Skill
 
-Systematic approach to reviewing code changes across multiple dimensions.
+Review code changes systematically, providing structured feedback.
 
-## Core Review Areas
+## When to Use
 
-1. **Correctness** - Logic validation and edge case handling
-2. **Security** - Vulnerability assessment including injection and exposure risks
-3. **Performance** - Query optimization and resource efficiency
-4. **Maintainability** - Code clarity, abstraction, and design principles
-5. **Testing** - Coverage and test quality
+- Reviewing pull requests
+- Reviewing staged/unstaged changes
+- Before committing code
+- When user asks for feedback on code
 
-## Operational Focus
+## Review Process
 
-Think like Joe Armstrong about failure modes. Consider who debugs this at 3am.
+### 1. Gather Context
 
-## Critical Red Flags
+```bash
+# For uncommitted changes
+git diff
+git diff --staged
 
-- Missing idempotency in background jobs
-- Absent rollback paths for data modifications
-- Silent failure handling without logging
-- Race conditions and missing database indexes
-- Hardcoded secrets
+# For a PR
+gh pr view [number] --json additions,deletions,files
+gh pr diff [number]
+```
 
-## Output Structure
+### 2. Review Checklist
 
-- Risk assessment
-- Critical issues
-- Failure mode analysis
-- Suggestions
-- Positive observations
-- Clarifying questions
+#### Correctness
+- [ ] Does the code do what it claims to do?
+- [ ] Are edge cases handled?
+- [ ] Are there any logic errors?
+
+#### Security
+- [ ] SQL injection vulnerabilities?
+- [ ] XSS vulnerabilities?
+- [ ] Sensitive data exposure?
+- [ ] Authentication/authorization issues?
+
+#### Performance
+- [ ] N+1 queries?
+- [ ] Unnecessary database calls?
+- [ ] Memory leaks?
+- [ ] Blocking operations?
+
+#### Maintainability
+- [ ] Clear naming?
+- [ ] Appropriate abstraction level?
+- [ ] DRY violations?
+- [ ] Single responsibility?
+
+#### Testing
+- [ ] Are there tests for new functionality?
+- [ ] Do tests cover edge cases?
+- [ ] Are tests readable?
+
+#### Operational Concerns
+For significant changes, run `operational-review` skill for full assessment. Quick checks:
+- [ ] Idempotent? (jobs, APIs, CRUD operations)
+- [ ] Rollback path exists?
+- [ ] Failure modes handled?
+
+### 3. Output Format
+
+```markdown
+## Code Review Summary
+
+**Files Changed:** [count]
+**Risk Level:** LOW | MEDIUM | HIGH
+**Rollback Complexity:** Simple | Moderate | Complex
+
+### Critical Issues
+- [file:line] [issue description]
+
+### Failure Modes to Consider
+- [scenario]: [what happens]
+
+### Operational Gaps
+- [missing observability/logging/idempotency]
+
+### Suggestions
+- [file:line] [suggestion]
+
+### Positive Notes
+- [what was done well]
+
+### Questions
+- [clarifying questions for the author]
+```
+
+## Guidelines
+
+- Be constructive, not critical
+- Explain WHY something is an issue
+- Provide concrete suggestions
+- Acknowledge good patterns
+- Distinguish between blocking issues and nice-to-haves
+- Display the FULL review output - never summarize
+- Think like Joe Armstrong about failure modes
+- Consider who debugs this at 3am
 
 ## Language-Specific Checks
 
-Support Ruby/Rails, JavaScript/TypeScript, and general patterns.
+### Ruby/Rails
+- Strong params usage
+- N+1 query detection
+- Service object patterns
+- Proper error handling
+- Sidekiq job idempotency
+- Silent failures (rescue without logging)
 
-Emphasize constructive feedback that explains reasoning behind concerns.
+### JavaScript/TypeScript
+- Type safety
+- Async/await usage
+- Memory management
+- React hook rules
+
+### General
+- Consistent formatting
+- Documentation for public APIs
+- Error messages are helpful
+- Logging is appropriate
+
+## Red Flags to Always Flag
+
+- Missing idempotency in background jobs
+- No rollback path for data changes
+- Silent failures (rescue without logging)
+- Race conditions
+- Missing indexes on queried columns
+- Hardcoded secrets

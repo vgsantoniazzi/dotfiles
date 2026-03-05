@@ -277,6 +277,12 @@ Claude should:
 - Default to instance methods for better testability
 - Use class methods only for true class-level concerns
 
+### Follow Existing Conventions
+- Before writing or proposing any code, read sibling files to understand how the codebase does things
+- Never introduce patterns, assertion styles, or strategies not already used in the project
+- Match the existing style exactly — if the codebase uses `double()`, don't switch to `instance_double`; if specs use `context "when ..."`, follow that
+- When unsure, check 2-3 similar files first
+
 ### Code Style Preferences
 - Explicit over clever
 - Boring over interesting

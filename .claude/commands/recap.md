@@ -1,37 +1,66 @@
 ---
 name: recap
-description: Quick project summary for returning after time away. Scans ai-notes, extracts task status, reviews recent context.
+description: Generate a quick recap for someone returning to this project after time away. Focus on state, decisions, and next actions.
 ---
 
-# Recap
+# Recap Command
 
-Generate a quick project summary for returning after time away.
+Generate a quick recap for someone returning to this project.
 
 ## Process
 
-1. Scan `ai-notes/` directory structure to identify key topics
-2. Extract task completion status from todo files using checkbox patterns
-3. Review recent work context, decisions, and blockers
-4. Output structured markdown
+1. **Scan ai-notes/ directory** (if exists at project root):
+   - List all files to understand project structure
+   - Note file names - they often indicate key topics/features
 
-## Output Format
+2. **Extract task status from todo files**:
+   - Find files matching `ai-notes/**/*/todo.{txt,md}`
+   - Extract lines matching `- [ ]`, `- [x]`, `- [/]`
+   - Use subagent for deeper context if needed
 
-- **Project context**: What is this project about
-- **Current state**: Status breakdown of tasks
-- **Recent decisions**: What was decided and why
-- **Assumptions needing validation**: Unverified assumptions
-- **Operational notes**: Maintenance and monitoring considerations
-- **Next actions**: Specific, actionable next steps
-- **Open questions**: Unresolved items
+3. **Review recent conversation** (if any):
+   - What was being worked on
+   - Key decisions made
+   - Assumptions that need validation
+   - Blockers or open questions
 
-## Principles
+4. **Produce condensed recap**:
 
-- Be terse - optimized for parallel project work
-- Emphasize actionable next steps as starting points
-- Surface unvalidated assumptions clearly
-- Flag operational and maintenance considerations
-- Use subagents to manage context efficiently
+```markdown
+## Recap
 
-## Graceful Handling
+**Context:** [1-2 sentences: what is this project/feature about]
 
-Note when no `ai-notes/` directory or conversation context exists.
+**Current state:**
+- [what's done]
+- [what's in progress]
+- [what's blocked]
+
+**Recent decisions:**
+- [decision]: [rationale]
+- [decision]: [rationale]
+
+**Assumptions to validate:**
+- [assumption that was made without explicit confirmation]
+
+**Operational notes:**
+- [any observability gaps]
+- [maintenance considerations]
+- [technical debt introduced]
+
+**Next actions:**
+- [ ] [specific actionable next step]
+- [ ] [another next step]
+
+**Open questions:**
+- [blockers or decisions pending]
+```
+
+## Key Principles
+
+- **Be terse** - User works on parallel projects and needs quick pointers
+- **Focus on next actions** - That's the starting point for the next prompt
+- **Surface assumptions** - Highlight what needs validation
+- **Note operational state** - Any monitoring gaps or maintenance needs
+- If no ai-notes/ exists and no conversation context, say so briefly
+- Use subagents to read files to avoid context bloat
