@@ -17,18 +17,8 @@ $ dotfiles checkout
 
 ## Install all requirements
 
-- [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh)
-- [Tmux](https://github.com/tmux/tmux)
 - [Emacs](https://www.gnu.org/software/emacs/)
-- [Imwheelrc](http://imwheel.sourceforge.net/)
 - [RVM](https://rvm.io/), [NVM](https://github.com/nvm-sh/nvm) and [Pyenv](https://github.com/pyenv/pyenv)
-
-
-## Apply terminal colors
-
-```
-dconf load /org/gnome/terminal/legacy/profiles:/ < ~/.dotfiles-config/gnome-terminal-conf.xml
-```
 
 ## Documentation
 

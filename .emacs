@@ -1,3 +1,7 @@
+;; Suppress straight.el warning about package.el coexistence
+(setq warning-suppress-types '((straight) (straight package)))
+(setq warning-suppress-log-types '((straight) (straight package)))
+
 ;; Disable whitespace mode for orgmode
 (setq whitespace-global-modes '(not org-mode))
 
@@ -28,6 +32,7 @@
  '(package-selected-packages
    '(quelpa-use-package quelpa helm-projectile helm-ag 0x0 company dash s use-package editorconfig browse-at-remote zenburn-theme gruvbox-theme rust-mode elixir-mode javap-mode web-mode typescript-mode slim-mode poet-theme org-bullets ruby-electric projectile))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
+ '(menu-bar-mode nil)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
@@ -55,7 +60,7 @@
      (340 . "#fff59d")
      (360 . "#8bc34a")))
  '(vc-annotate-very-old-color nil)
- '(warning-suppress-types '((comp) (comp)))
+ '(warning-suppress-types '((comp) (comp) (straight)))
  '(whitespace-line-column 9999))
 
 ;;Variables set by emacs client
@@ -65,7 +70,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Menlo for Powerline" :foundry "PfEd" :slant normal :weight normal :height 120 :width normal))))
+ '(default ((t (:family "JetBrainsMono Nerd Font" :slant normal :weight normal :height 110 :width normal))))
  '(whitespace-empty ((t (:background "dark gray"))))
  '(whitespace-line ((t nil)))
  '(whitespace-newline ((t (:foreground "gray12"))))
@@ -119,9 +124,27 @@
 ;; Default Emacs is too little and we always need to
 ;; resize manually
 (setq default-frame-alist
-      '((width . 300) (height . 80)))
+      '((width . 300) (height . 80)
+        (internal-border-width . 14)))
 
 ;;;;;;;;;;;;;;;;;;;; Package loader ;;;;;;;;;;;;;;;;;;;;
+
+;; Bootstrap straight.el first (for copilot)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; Add Melpa
 ;; Probably the most used package maneger of emacs
@@ -130,8 +153,13 @@
 (package-initialize)
 
 
-;; Enable theme
-(load-theme 'gruvbox t)
+;; Tokyo Night theme (matches omarchy)
+(use-package tokyo-theme
+  :straight (:host github :repo "rawleyfowler/tokyo-theme.el" :files ("*.el"))
+  :ensure t
+  :config
+  (load-theme 'tokyo t))
+
 
 ;; Support project file finder, grep under emacs and a bunch of other stuff
 (projectile-mode +1)
@@ -182,24 +210,7 @@
 ;; Add the browse-at-remote to open github links from code
 (global-set-key (kbd "C-c g g") 'browse-at-remote)
 
-(exec-path-from-shell-initialize)
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
+;; Copilot setup (uses straight.el)
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t)
