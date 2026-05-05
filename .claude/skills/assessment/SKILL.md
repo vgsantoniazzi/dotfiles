@@ -26,6 +26,21 @@ This skill has two stages with a **mandatory stop** between them:
 **Claude MUST NOT write or modify any source code until the user has responded with their action plan.**
 The assessment is a report. The user decides what to do with it. No exceptions.
 
+## Execution Model — Context Protection
+
+**Run the entire Stage 1 (Phases 1-5) as a single subagent.**
+
+The main thread MUST:
+1. Spawn ONE `general-purpose` agent with the full assessment task (target file, scope, any user context)
+2. The agent runs all 5 phases internally (including its own sub-agents for Phase 4)
+3. The agent returns the complete formatted assessment report
+4. Display the agent's output **VERBATIM** — never summarize
+5. Handle Stage 2 (finding-by-finding user interaction) in the main thread
+
+This prevents the assessment's heavy context (file reads, test output, dependency mapping, multi-agent analysis) from consuming the main conversation window. The main thread stays clean for the Stage 2 back-and-forth.
+
+**The agent's prompt must include the full skill instructions** so it follows the same phases, scoring, and output format.
+
 ## When to Use
 
 - Before merging significant code
@@ -37,12 +52,13 @@ The assessment is a report. The user decides what to do with it. No exceptions.
 ## Primary Goals (Priority Order)
 
 1. **Correctness & edge cases** — Does the code behave correctly in real-world conditions?
-2. **Maintainability & clarity** — Can another engineer safely modify this in 6 months?
-3. **Reliability & failure modes** — How does it behave when things go wrong?
-4. **Security & data safety** — Only if applicable and visible in the code
-5. **Performance** — Only if a concrete issue is observable
+2. **Test coverage** — Are the important paths tested? Are tests meaningful, not just padding?
+3. **Maintainability & clarity** — Can another engineer safely modify this in 6 months?
+4. **Reliability & failure modes** — Only concrete failure scenarios (data loss, silent corruption), NOT generic "add logging"
+5. **Security & data safety** — Only if applicable and visible in the code
+6. **Performance** — Only if a concrete issue is observable
 
-Do NOT optimize for style unless it impacts the goals above.
+Do NOT optimize for style unless it impacts the goals above. Do NOT report generic observability gaps as findings.
 
 ---
 
@@ -244,7 +260,7 @@ Propose specific tests that would catch real bugs."
 
 **Goal:** Combine all findings into structured assessment.
 
-Score each category 0-10. Be honest. Most code is 5-7.
+Score each category 0-10. Be honest. Score what you see, not what's missing from a theoretical ideal.
 
 | Category | Weight | Score | Weighted |
 |----------|--------|-------|----------|
@@ -258,11 +274,13 @@ Score each category 0-10. Be honest. Most code is 5-7.
 
 ### Scoring Guidance
 
-- **9-10**: Production-ready, exemplary. Rare.
-- **7-8**: Solid. Minor issues. Ship with confidence.
-- **5-6**: Acceptable. Has gaps. Common for real code.
-- **3-4**: Problematic. Needs work before shipping.
+- **9-10**: Excellent. Well-tested, clear intent, handles edge cases, production-ready. This is what good engineering looks like — do not treat it as unattainable.
+- **7-8**: Good. Minor gaps but solid overall. Ship with confidence.
+- **5-6**: Mediocre. Notable gaps in testing or error handling.
+- **3-4**: Problematic. Significant issues need addressing before shipping.
 - **0-2**: Broken or dangerous. Block until fixed.
+
+**Calibration rule:** If the code has good test coverage, handles its edge cases, and reads clearly — that's an 8-9. Do NOT deduct points for hypothetical improvements or missing observability. Only deduct for concrete, demonstrable issues.
 
 **Each score MUST have justification citing specific evidence.**
 
@@ -547,6 +565,14 @@ Same full format as Must-Fix. No shortcuts.]
 
 ## Anti-Patterns (Do NOT Do These)
 
+### Noise Findings — NEVER Report These
+- **"Missing logger/logging"** — Unless there's a specific failure scenario where data is lost silently
+- **"Add monitoring/observability"** — Generic observability advice is not a code defect
+- **"Consider adding metrics"** — Not a finding
+- **"Missing error notification"** — Unless errors are actively swallowed with no trace
+- Any suggestion that starts with "Consider..." or "You might want to..." — either it's a real issue or it's not
+
+### Other Anti-Patterns
 - Generic "you should add error handling" without specific evidence
 - "Consider using X pattern" without explaining why it matters HERE
 - Style nitpicks that don't affect correctness/maintainability
