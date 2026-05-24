@@ -80,27 +80,21 @@ This commit moves the class under Notifications namespace and updates the
 three call sites in mailer classes.
 ```
 
-## Pre-Commit Checks
+## Pre-Commit Checks (MANDATORY)
 
-Before committing, always run linting to catch style issues:
+**ALWAYS run auto-fix linters on staged files before committing. No exceptions.**
 
 ```bash
-# For Ruby/Rails projects
-bundle exec rubocop [changed files]
+# Ruby/Rails — auto-fix staged .rb files, then re-stage
+dip bundle exec rubocop -a $(git diff --cached --name-only -- '*.rb')
+git add $(git diff --cached --name-only -- '*.rb')
 
-# Auto-fix correctable offenses
-bundle exec rubocop -a [changed files]
-
-# For JavaScript/TypeScript projects
-npm run lint [changed files]
-# or
-npx eslint [changed files]
-
-# Auto-fix correctable offenses
-npx eslint --fix [changed files]
+# JavaScript/TypeScript — auto-fix staged files, then re-stage
+npx eslint --fix $(git diff --cached --name-only -- '*.ts' '*.tsx' '*.js' '*.jsx')
+git add $(git diff --cached --name-only -- '*.ts' '*.tsx' '*.js' '*.jsx')
 ```
 
-If linting reports offenses, fix them before committing. This prevents back-and-forth on style issues after the commit is made.
+If offenses remain after auto-fix, fix them manually before committing. Never commit with linter violations.
 
 ## Workflow
 

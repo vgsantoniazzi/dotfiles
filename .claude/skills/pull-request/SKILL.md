@@ -1,11 +1,11 @@
 ---
 name: pull-request
-description: Create pull requests with clear, readable descriptions. Branch naming conventions and prose-first PR bodies.
+description: Create pull requests with descriptions optimized for skimmability. Branch naming, bullet-leaning PR bodies, length discipline.
 ---
 
 # Pull Request Workflow
 
-Create branches and pull requests with well-written, readable descriptions.
+Create branches and PRs with descriptions that respect the reviewer's time.
 
 ## When to Use
 
@@ -14,154 +14,128 @@ Activate when the user:
 - Says "open PR", "create PR", "submit for review"
 - Wants to push and create a PR in one flow
 
-## Branch Naming Convention
+## Branch Naming
 
-Always create branches with the format: `vgsa/<descriptive-slug>`
+`vgsa/<descriptive-slug>` — lowercase, hyphen-separated, specific enough that the slug tells the reviewer what changed.
 
 Examples:
 - `vgsa/fix-eligible-customer-n-plus-one-query`
 - `vgsa/add-coupon-validation-campaign`
 - `vgsa/refactor-wallet-integration-client`
 
-Rules:
-- Prefix: always `vgsa/`
-- Suffix: lowercase, hyphen-separated description of the change
-- Be specific enough that the branch name tells a story
+## PR Description: Principles
 
-## PR Description Format
+A reviewer should grasp the point in under 10 seconds and the full PR in under a minute. Optimize for skimmability.
 
-### Step 1: Follow the Project Template
+1. **Lead with the point.** First 1–2 sentences answer "what + why". No throat-clearing, no preamble.
+2. **Bullet the lists.** Discrete changes, out-of-scope items, follow-ups, and risks are lists — write them as lists. Don't bury bulletable content in prose.
+3. **Prose only for insight.** Use a paragraph when the *why* of an approach isn't visible in the diff: a tricky tradeoff, a rejected alternative, a non-obvious constraint. Otherwise skip it.
+4. **One idea per sentence.** Long sentences fused with em-dashes are a smell. Split them.
+5. **Cut the obvious.** Don't restate the title. Don't list every modified file. Don't announce "tests pass" unless the result is surprising.
 
-Before writing the PR body, check for `.github/pull_request_template.md` in the repo. If it exists, **use its exact structure** — fill in each section from the template. Do not invent your own sections or skip template sections.
+**Length check:** most PRs land at 80–200 words. If you cross 300, ask whether every paragraph is load-bearing.
 
-### Step 2: Match Recent PR Conventions
+## PR Description: Structure
 
-Read 2-3 recent merged PRs (`gh pr list --state merged --limit 3` then `gh pr view <number>`) to match the team's current conventions for:
-- How they format the Asana/ticket link (raw URL vs markdown link)
-- Level of detail in descriptions
-- Whether they use `### How to Review` or `#### Why / What` subsections
-- Tone and formality
+Use `.github/pull_request_template.md` if present. Otherwise default to a single `### Description` section shaped like:
 
-### Step 3: Write the Description
+```
+<1–2 sentence hook: what changes, why>
 
-Write like a distinguished engineer talking to a colleague: narrative-first, precise, and honest. The description should read as flowing prose that tells a story — why we're here, what we did, and what to watch out for. Use bullet points when listing discrete items (files, steps, vendors), but the primary voice is prose.
+<optional short paragraph: the non-obvious technical insight, if any>
 
-**Title**: Short, imperative summary (same style as commit summary)
+Changes:
+- <discrete change>
+- <discrete change>
 
-**Body** (within the template structure):
+<Out of scope / Follow-ups / Notes — only the headers you actually need>
+- <gotcha, rejected alternative, or scoping note>
+```
 
-1. **Lead with the story** — Start with the problem as a narrative. What happened? What's the pain? Link to Slack threads, Sentry errors, or incidents that triggered this. The reader should immediately understand *why* this PR exists and feel the urgency (or lack thereof).
+Before writing, run `gh pr list --state merged --limit 3` and skim 2–3 recent PRs to match team conventions for ticket links, section labels, and tone.
 
-2. **Explain the approach** — Describe what you did and *why this way* over alternatives. Be honest about trade-offs: "An ideal solution would X, but Y is sufficient because Z." Include the key technical insight that makes the fix non-obvious. Use bullet points for listing discrete changes when there are several.
+## What NOT to Include
 
-3. **Be transparent about scope and risks** — What does this NOT fix? What follow-up is planned? What could go wrong? Mention if you considered and rejected alternatives. Invite discussion: "If you feel strongly about X, let's iterate."
-
-**Tone**: Conversational but precise. It's okay to say "I wondered about...", "this is fine IMO because...", or "if you disagree, feel free to reject." The PR is a conversation, not a formal report.
-
-### What NOT to Include
-
-- **Never mention AI/Claude** — The PR stands on its own merit
-- No bullet-point changelogs listing every modified file
-- No excessive headers beyond what the template provides
-- No obvious statements like "This PR adds the feature"
-- Do not add sections not present in the template (e.g., don't add `## Test plan` if the template doesn't have it)
+- AI/Claude attribution — never
+- A `## Test plan` section — tests are run before the PR, not enumerated in it
+- A bullet-point changelog of every modified file
+- Generic filler ("This PR adds the feature", "All tests pass")
+- Sections the template doesn't have
+- "I considered X..." unless X is a real alternative a reviewer might propose
 
 ## Examples
 
-### Bug fix — narrative, evidence, follow-up
+### Bug fix — tight prose, one follow-up
 
 ```
-### Asana Ticket and/or Slack Thread
-
-Asana ticket: https://app.asana.com/...
-
 ### Description
 
-When async vendors like Wogi run out of funds (NSF), the payout blocker queue
-drains slowly. This happens because redemption_clearable? requires
-purchase_completed_at to be set, but for async vendors this is only set when the
-webhook arrives (which in some cases can take 10+ seconds, exceeding the blocker
-clearance timeout).
+When async vendors like Wogi run out of funds (NSF), the payout blocker queue drains slowly: `redemption_clearable?` requires `purchase_completed_at`, which for async vendors is only set when the webhook arrives. That webhook can take 10+ seconds, exceeding the blocker's clearance timeout.
 
-Add a spec that reproduced the bug, and adjust the code to clear the blocker if
-a vendor_token is present on the merchant card. A follow up PR will make this
-test shared outside of merchant cards and add specs to relevant vendors.
+The fix clears the blocker if a `vendor_token` is present on the merchant card. A spec reproducing the bug is included.
+
+Follow-up: extract this check into a shared module so other async vendors get the same behavior.
 ```
 
-### Improvement — story, trade-offs, honest scoping
+### Feature — hook, insight paragraph, notes bullets
 
 ```
-### Asana Ticket and/or Slack Thread
-
-Slack thread: https://tremendous-rewards.slack.com/archives/...
-
 ### Description
 
-When investigating issues in Datadog, finding all logs related to a payout or
-gift requires manually searching for each request_id that touched the record.
-This is tedious because a single payout may have dozens of versions from
-different requests over its lifecycle.
+Lets users find all logs related to a payout or gift in Datadog without manually collecting `request_id`s for each version.
 
-This change adds a with_request_id option to datadog_url that extracts
-request_id values from PaperTrail versions of the model and its associations.
-It appends these as OR clauses to the Datadog search query, making it easy to
-find all logs from every request that modified the record. The feature limits
-versions loaded to 50 per model to avoid overwhelming queries on records with
-extensive history.
+`datadog_url` gains a `with_request_id` option that pulls request_ids from PaperTrail versions of the model and its associations, then appends them as OR clauses to the Datadog search query. The ideal version would hit Datadog's API directly, but PaperTrail is sufficient for debugging and adds no new infra.
 
-An ideal solution would hit Datadog's API to fetch all request_id's, but pulling
-from PaperTrail versions is sufficient for debugging purposes and requires no
-schema changes.
+Notes:
+- Capped at 50 versions per model to avoid blowing up queries on long-history records
+- Read-only; no schema or API changes
 ```
 
-### Cleanup — evidence-based removal
+### Cleanup — evidence, bullet-heavy
 
 ```
-### Asana Ticket and/or Slack Thread
-
-Asana ticket: https://app.asana.com/...
-
 ### Description
 
-The Funding Sources API had a config flag (api_show_all_funding_sources) that
-controlled whether to show all funding sources or only active, API-enabled ones.
-The migration was completed in September 2025, and all customers now use the new
-behavior (confirmed by production query showing 0 orgs with the old config).
+Removes the `api_show_all_funding_sources` config flag. Migration completed September 2025; production query confirms 0 orgs still use the old behavior.
 
-This commit removes all conditional logic and config related to
-api_show_all_funding_sources. The API now always returns all funding sources.
-The changes include:
-
-- Simplified FundingSourcesController to always call all_funding_sources
-- Removed filtered_funding_sources method and show_all? helper
-- Removed api_show_all_funding_sources? from Organization model
-- Removed config definition from organization_config.en.yml
-- Deleted maintenance task files used for the migration
-- Updated tests to remove config-based scenarios
+Changes:
+- `FundingSourcesController` always calls `all_funding_sources`
+- Removed `filtered_funding_sources` and `show_all?` helpers
+- Removed `api_show_all_funding_sources?` from `Organization`
+- Removed config definition from `organization_config.en.yml`
+- Deleted maintenance task and spec used for the migration
+- Updated tests to drop config-based scenarios
 ```
 
 ## Workflow
 
-### Step 0: Ask for Artifacts
-
-Before creating the PR, check if the template requires links or references (Asana tickets, Slack threads, Notion docs, etc.). If the user hasn't provided them and the template has fields for them, **ask the user** — don't leave them blank or guess.
-
-### Steps 1-4: Create the PR
+### Pre-PR Checks (MANDATORY)
 
 ```bash
-# 1. Create and switch to new branch
+# Ruby/Rails
+bundle exec rubocop [changed files]
+bundle exec rspec [affected spec files]
+
+# JavaScript/TypeScript
+npx eslint [changed files]
+npx tsc --noEmit
+npm run test
+```
+
+Fix offenses before the PR. Never create a PR with failing tests or lint violations.
+
+### Artifacts
+
+If the PR template references Asana tickets, Slack threads, or similar, ask the user for the link first. Don't leave the field blank or guess.
+
+### Steps
+
+```bash
 git checkout -b vgsa/<descriptive-slug>
-
-# 2. Make commits (use git-commit skill)
-
-# 3. Push with upstream tracking
+# (commit via git-commit skill)
 git push -u origin vgsa/<descriptive-slug>
-
-# 4. Create PR
-gh pr create --title "PR title" --body "$(cat <<'EOF'
-Description paragraph here.
-
-Additional context if needed.
+gh pr create --title "..." --body "$(cat <<'EOF'
+...
 EOF
 )"
 ```
@@ -170,16 +144,6 @@ EOF
 
 - Always use `vgsa/` branch prefix
 - Never include AI attribution in title or body
-- Prefer prose over bullet points
-- Write descriptions that are pleasant to read
-- Ask user to confirm before creating the PR
-- Return the PR URL when complete
-
-## After Creating
-
-Display the PR URL:
-```
-Created PR #123: https://github.com/org/repo/pull/123
-```
-
-**NEVER ask to merge the PR** - the user will always merge via GitHub directly.
+- Confirm with the user before running `gh pr create`
+- Return the PR URL when done
+- **Never offer to merge the PR** — the user merges via GitHub

@@ -9,6 +9,14 @@ I value **clarity, leverage, and compounding improvements** over cleverness.
 
 ---
 
+## Non-Negotiable Rules
+
+- **Always invoke the `pull-request` skill before creating any PR.** It enforces branch naming (`vgsa/`), template compliance, pre-PR checks, and artifact collection. No PR without it.
+- **Ask ALL questions before executing ANY work.** When you have multiple questions or need multiple user decisions — across assessments, reviews, or any multi-step task — ask everything first, collect all answers, build a todo list, then execute. Never start working between questions.
+- **Always run lint and tests locally before `git push`.** Never push code and rely on CI to validate. Run the project's linter and test suite locally, confirm they pass, and only then push. If checks fail, fix locally and re-run — do not push hoping CI will catch it. Project CLAUDE.md files define the specific commands to run (e.g., `rubocop` + `bin/rspec` for Rails, `eslint` + `vitest` for Node). If no project-specific commands are documented, detect and run the standard lint/test commands for the stack.
+
+---
+
 ## Claude File Storage Rules
 
 **All project-related files MUST be stored in the project's `.claude/` directory, NOT in `~/.claude/`.**
@@ -224,6 +232,7 @@ Aligned with Kent Beck:
 - Tests that support refactoring
 - Small steps, tight iteration
 - Pragmatic based on context
+- When creating a todo/task list for implementation, always plan tasks using TDD (write the failing test first, then implement)
 
 ### When Stuck on Tests
 1. STOP and ask for guidance
@@ -267,11 +276,17 @@ Claude should:
 - Methods: Verbs that describe what they do
 - Variables: Descriptive names that reveal intent
 - NEVER use generic names like `run`, `call`, `execute` without context
+- NEVER use abbreviations — always use full words (e.g., "organization" not "org", "points" not "pts")
 
 ### Method Design
 - Keep methods small (5-15 lines preferred, 20 max)
 - Each method should do ONE thing
 - Extract complex logic into well-named private methods
+
+### Comments
+- Do NOT add comments to code by default. Code should be self-explanatory through naming and structure.
+- Comments are acceptable only where a non-obvious relationship must be documented (e.g., organization associations that are guaranteed to always exist, like `config` and `instagram_account`).
+- Never add comments that restate what the code does.
 
 ### Instance Methods Over Class Methods
 - Default to instance methods for better testability
@@ -470,6 +485,7 @@ Before submitting any code:
 - Makefile: use dots for namespacing targets
 
 ### Git
+- Always load and use the `git-commit` skill before any commit
 - Never include Co-Authored-By lines in commits - user is the sole author
 - Never ask to merge PRs - user will merge via GitHub directly
 
@@ -502,6 +518,7 @@ Skills must be invoked automatically at these points - do not wait for user requ
 | When committing | `git-commit` | Structured messages, problem-solution format |
 | Before suggesting optimizations | `review-recommendations` | Filter mediocre advice |
 | For significant changes | `operational-review` | Assess maintenance burden |
+| Before creating a pull request | `pull-request` | Enforce PR format and pre-PR checks |
 
 **Limitation:** This is guidance, not enforcement. Claude may forget in long sessions. For critical workflows (e.g., never commit without review), consider using hooks instead.
 
