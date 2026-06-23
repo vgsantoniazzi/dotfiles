@@ -26,3 +26,4 @@ app/.byebug_history
 .claude/statsig/
 .claude/.credentials.json
 .claude/stats-cache.json
+.claude/plugins/
