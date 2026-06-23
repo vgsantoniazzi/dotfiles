@@ -130,9 +130,11 @@
       "Bash(emacsclient:*)",
       "Bash(ghostty:*)",
       "Bash(compgen:*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
-  "effortLevel": "high",
-  "voiceEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "effortLevel": "xhigh",
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
