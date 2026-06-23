@@ -14,6 +14,7 @@ I value **clarity, leverage, and compounding improvements** over cleverness.
 - **Always invoke the `pull-request` skill before creating any PR.** It enforces branch naming (`vgsa/`), template compliance, pre-PR checks, and artifact collection. No PR without it.
 - **Ask ALL questions before executing ANY work.** When you have multiple questions or need multiple user decisions — across assessments, reviews, or any multi-step task — ask everything first, collect all answers, build a todo list, then execute. Never start working between questions.
 - **Always run lint and tests locally before `git push`.** Never push code and rely on CI to validate. Run the project's linter and test suite locally, confirm they pass, and only then push. If checks fail, fix locally and re-run — do not push hoping CI will catch it. Project CLAUDE.md files define the specific commands to run (e.g., `rubocop` + `bin/rspec` for Rails, `eslint` + `vitest` for Node). If no project-specific commands are documented, detect and run the standard lint/test commands for the stack.
+- **No comments in code. Period.** Code is self-explanatory through naming and structure. Context (the *why*) belongs in the commit message or PR description — never in the source file. The only exception is a non-obvious invariant that would mislead a reader without it (e.g., "this association is always present because X"). If you find yourself writing a comment to explain *what* the code does, rewrite the code instead. I have rejected PRs over this — do not test me.
 
 ---
 
@@ -284,9 +285,10 @@ Claude should:
 - Extract complex logic into well-named private methods
 
 ### Comments
-- Do NOT add comments to code by default. Code should be self-explanatory through naming and structure.
-- Comments are acceptable only where a non-obvious relationship must be documented (e.g., organization associations that are guaranteed to always exist, like `config` and `instagram_account`).
+- See **Non-Negotiable Rules**: no comments in code.
+- The only acceptable comment documents a non-obvious invariant that would mislead a reader without it (e.g., organization associations that are guaranteed to always exist, like `config` and `instagram_account`).
 - Never add comments that restate what the code does.
+- Never add comments that explain "why" — that goes in the commit message or PR description, not the source file.
 
 ### Instance Methods Over Class Methods
 - Default to instance methods for better testability
