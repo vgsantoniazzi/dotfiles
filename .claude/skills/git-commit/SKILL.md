@@ -82,19 +82,43 @@ three call sites in mailer classes.
 
 ## Pre-Commit Checks (MANDATORY)
 
-**ALWAYS run auto-fix linters on staged files before committing. No exceptions.**
+Resolve `DIR` and `LINT` per language from `~/.claude/shared/project-checks.md`.
+Never hardcode a runner here; this skill runs in every repo.
+
+Run once per touched sub-project. It lints only what is staged, and does
+nothing when nothing is staged.
+
+Bind `DIR` and `LINT` explicitly first. If either is unset the block below
+lints nothing and still exits 0, which is worse than failing.
 
 ```bash
-# Ruby/Rails — auto-fix staged .rb files, then re-stage
-dip bundle exec rubocop -a $(git diff --cached --name-only -- '*.rb')
-git add $(git diff --cached --name-only -- '*.rb')
-
-# JavaScript/TypeScript — auto-fix staged files, then re-stage
-npx eslint --fix $(git diff --cached --name-only -- '*.ts' '*.tsx' '*.js' '*.jsx')
-git add $(git diff --cached --name-only -- '*.ts' '*.tsx' '*.js' '*.jsx')
+: "${DIR:?resolve DIR from the project first}"
+: "${LINT:?resolve LINT from the project first}"
+cd "$(git rev-parse --show-toplevel)/$DIR" || exit 1
+files=$(git diff --cached --name-only --relative --diff-filter=ACMR -- '*.rb')
+if [ -z "$files" ]; then
+  echo "no staged .rb in $DIR, skipping"
+else
+  echo "$files" | xargs $LINT && echo "$files" | xargs git add
+fi
 ```
 
-If offenses remain after auto-fix, fix them manually before committing. Never commit with linter violations.
+Same shape for JS/TS, but check the script first. A `lint` script that already
+carries `--fix` and its own glob (`eslint --fix "src/**/*"`) ignores the files
+you pass and rewrites the whole tree. Call the linter directly in that case.
+
+Three parts are load-bearing:
+
+- `cd $DIR` plus `--relative`. Without both, paths stay repo-root-relative and a
+  containerised linter whose cwd is the sub-project receives `api/api/...`.
+- The `[ -z ]` guard. GNU xargs runs its command on empty input, so an empty
+  expansion becomes an auto-fix across the entire project.
+- `--diff-filter=ACMR`. Drops staged deletions, which the linter cannot open.
+
+`git add` re-stages whole files. If you staged only some hunks, check `git diff`
+is empty for those paths first.
+
+If offenses remain after auto-fix, fix them by hand. Never commit with violations.
 
 ## Workflow
 
@@ -124,7 +148,7 @@ EOF
 When creating branches, use the format: `vgsa/<descriptive-slug>`
 
 Examples:
-- `vgsa/fix-email-notification-visa-galileo`
+- `vgsa/fix-webhook-retry-timeout`
 - `vgsa/add-retry-button-exports`
 - `vgsa/refactor-payment-processor`
 
@@ -135,7 +159,8 @@ Rules:
 
 ## Rules
 
-- **Always run linters before committing** (rubocop for Ruby, eslint for JS/TS)
+- **Always run the project's linter before committing**, resolved from
+  `~/.claude/shared/project-checks.md`. Never name a runner here.
 - Do NOT push without user confirmation
 - Keep summary under 50 characters
 - Wrap body at 80 characters
@@ -151,17 +176,19 @@ Ask if they want to push.
 
 ## After Pushing
 
-Always return the branch URL so the user can open the PR themselves:
+If the user asked only to commit, return the branch URL and stop:
 
 ```
-https://github.com/<org>/<repo>/compare/<branch>?expand=1
+https://github.com/<owner>/<repo>/compare/<branch>?expand=1
 ```
 
 Example output:
 ```
-Pushed to `vgsa/fix-email-notification-visa-galileo`
+Pushed to `vgsa/fix-webhook-retry-timeout`
 
-Open PR: https://github.com/tremendous/core/compare/vgsa/fix-email-notification-visa-galileo?expand=1
+Open PR: https://github.com/<owner>/<repo>/compare/<branch>?expand=1
 ```
 
-**Do NOT offer to create the PR** - the user will review and open it themselves.
+Never run `gh pr create` from this skill. If the user asked for a PR in the same
+breath, hand off to the `pull-request` skill after the push. If they only asked
+to commit, return the compare URL and stop.

@@ -5,7 +5,12 @@ description: Launch a pragmatic specification interview. Focuses on constraints,
 
 # Help Me Spec
 
-Launch a subagent that interviews the user to create a pragmatic specification.
+Interview the user yourself and write a pragmatic specification.
+
+**Do not delegate the interview.** A subagent cannot use `AskUserQuestion`; that
+tool is removed from subagents, so a delegated interview asks nobody anything.
+Delegate the codebase reading in step 1 if it is wide, and keep the questions
+here.
 
 ## Argument Handling
 
@@ -79,8 +84,9 @@ Before questions, scan the codebase:
 ## Completion
 
 1. Determine where to save:
-   - If `./ai-notes` exists: `./ai-notes/specs/[feature-name].md` (create `specs/` if needed)
-   - Otherwise: ask user, suggest `./spec.md`
+   - Default: `.claude/specs/[feature-name].md` in the project, per the storage
+     rule in `~/.claude/CLAUDE.md`. Create `specs/` if needed.
+   - If the project uses a different location, follow that.
 
 2. Write spec with ONLY relevant sections:
    - Overview (1-2 sentences)

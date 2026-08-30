@@ -37,7 +37,8 @@ end
 Run the test. Confirm it fails FOR THE RIGHT REASON.
 
 ```bash
-rspec spec/services/payment_service_spec.rb:42
+# resolve the runner from ~/.claude/shared/project-checks.md
+<project test command> spec/services/payment_service_spec.rb:42
 
 # Expected: 1
 # Got: 2
@@ -64,7 +65,8 @@ end
 Run the test. Confirm it passes:
 
 ```bash
-rspec spec/services/payment_service_spec.rb:42
+# resolve the runner from ~/.claude/shared/project-checks.md
+<project test command> spec/services/payment_service_spec.rb:42
 # 1 example, 0 failures
 ```
 

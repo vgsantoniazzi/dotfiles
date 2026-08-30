@@ -1,6 +1,6 @@
 ---
 name: operational-review
-description: Assess the operational burden of proposed changes. Who maintains this at 3am? How do we know it's broken?
+description: Assess operational burden before shipping. Use when a change adds or touches a job, cron, queue, callback, webhook, external integration, or production data, and when the user asks whether something will break production, inflate a queue, or run out of memory. Who maintains this at 3am, and how do we know it broke?
 ---
 
 # Operational Review Skill
@@ -12,6 +12,23 @@ Assess the operational burden of proposed changes.
 > Ask: Who maintains this at 3am? How do we know it's broken?
 
 ## When to Use
+
+Chained from `code-review`, `qa`, `conformance-review`, `structural-review` and
+`address-pr-comments` when a change touches **jobs, money, auth, or data**. That
+phrase is the contract; the callers use it verbatim.
+
+**Report, never ask.** You usually run as a chained step inside a subagent that
+cannot prompt anyone. Gaps go in the report as findings. Never open a question to
+the user, and never assume another skill's gate on their behalf.
+
+**Read-only.** Produce findings; never edit, write, commit, or post to a PR.
+Display findings verbatim; never summarise them.
+
+**Rank by consequence, not by area.** Must-fix means data loss, silent
+corruption, money wrong, or auth bypass. Everything else is should-fix or
+nice-to-have. A gap with no concrete failure scenario is not a finding at all.
+
+## Original triggers
 
 - Before implementing significant features
 - When reviewing architecture decisions
@@ -162,6 +179,6 @@ Rate each area: LOW | MEDIUM | HIGH
 ## Questions for the User
 
 If assessment reveals gaps:
-1. "This lacks [X]. Want me to add it now or create a task?"
+1. Report the gap as a finding with its failure scenario. Do not ask.
 2. "There's no alert for [Y]. Who should be notified on failure?"
 3. "The rollback path is unclear. Should we document it?"
