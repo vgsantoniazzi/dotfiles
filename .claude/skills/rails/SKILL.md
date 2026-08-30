@@ -13,6 +13,13 @@ Comprehensive guidance for Rails applications: testing, background jobs, and con
 
 ### Memory-Safe Iteration
 
+**What you pass depends on the mechanism, not on preference.**
+`Sidekiq::Worker` with `perform_async` serialises arguments to JSON, so pass
+ids and reload inside the job. ActiveJob with `perform_later` serialises through
+GlobalID, so pass the record and let it reload, which raises cleanly if the row
+is gone. Check which one the repo uses before writing either.
+
+
 ```ruby
 # Bad: loads all IDs into memory
 Customer.pluck(:id).each do |id|
@@ -21,7 +28,7 @@ end
 
 # Good: batches automatically
 Customer.find_each do |customer|
-  ProcessCustomerJob.perform_later(customer.id)
+  ProcessCustomerJob.perform_later(customer)
 end
 ```
 
@@ -44,9 +51,8 @@ job_class.perform_later(record.id)
 Never re-raise after marking failed - Sidekiq will retry zombie jobs:
 
 ```ruby
-def perform(record_id)
-  record = Record.find(record_id)
-  return if record.sent? || record.failed?  # Idempotency guard
+def perform(record)
+  return if record.sent? || record.failed?
 
   do_work(record)
   record.sent!
@@ -71,19 +77,9 @@ end
 
 ## Directory Structure
 
-```
-spec/
-  models/
-  lib/
-  jobs/
-  features/      # Capybara integration tests
-  requests/      # API endpoint tests
-  services/
-  factories/
-  support/
-  rails_helper.rb
-  spec_helper.rb
-```
+Read the repo's actual `spec/` tree before creating a file. Layouts differ:
+some projects keep a single `spec/factories.rb`, others a `spec/factories/`
+directory. Mirror what is already there; never introduce the other shape.
 
 ## Key Patterns
 
@@ -145,15 +141,14 @@ end
 
 ### Test Doubles
 
-ALWAYS use instance_double or class_double:
+Match the surrounding suite. Where the codebase already uses `double(...)`, keep it, converting
+a file to `instance_double` because this guide prefers it is exactly the context-free change
+that gets rejected in review. Repo precedent outranks this section.
+
+Starting fresh, prefer the verifying doubles, which fail when the real object loses the method:
 
 ```ruby
-# Good
 let(:mailer) { instance_double(UserMailer, deliver_later: true) }
-
-# Bad
-let(:mailer) { double('mailer') }
-let(:mailer) { mock('mailer') }
 ```
 
 ### Stubbing External APIs
@@ -239,20 +234,11 @@ end
 
 ## Comments
 
-Keep comments focused on WHY, not WHAT:
+The global no-comments rule applies to specs too. An `it` string that needs a
+comment to explain it is a badly worded `it` string.
 
 ```ruby
-# Good: explains business rule
-# Users under 18 require parental consent
-it 'requires consent for minors' do
-  # ...
-end
-
-# Bad: just describes the test
-# Tests that it requires consent
-it 'requires consent for minors' do
-  # ...
-end
+it 'requires parental consent below the legal age' do
 ```
 
 ## Testing Sidekiq Jobs

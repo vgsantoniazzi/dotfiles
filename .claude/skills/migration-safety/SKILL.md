@@ -18,6 +18,28 @@ Safely plan and execute database migrations.
 - Planning schema changes
 - Before deploying migrations
 
+## Read the repo's guard rails first
+
+Most Rails repos already enforce migration safety mechanically, and what they
+enforce differs. Before writing anything, check for:
+
+- **`strong_migrations`** in the Gemfile. If present, it blocks a bare
+  `remove_column`, a `change_column_null ... false`, and more. Read
+  `config/initializers/strong_migrations.rb` if it exists. **If it does not,
+  that is itself a finding**: without a `lock_timeout` and a `statement_timeout`
+  a long migration can hold a lock indefinitely, and the gem will warn about it
+  in production.
+- **Custom cops.** A repo may enforce migration rules the gem has no opinion on,
+  through its own RuboCop cops. A migration that satisfies the gem can still fail
+  that repo's CI. Look for a `lib/cops/` directory or migration-scoped rules in
+  `.rubocop.yml`.
+
+**One dangerous pattern the gem does not catch:** `add_index` with
+`algorithm: :concurrently` and no `disable_ddl_transaction!`. The gem checks only
+that you used `concurrently`, never that you left the transaction on, so this
+passes every guard and then fails at Postgres with `CREATE INDEX CONCURRENTLY
+cannot run inside a transaction block`. Always pair the two.
+
 ## Pre-Migration Checklist
 
 ### 1. Reversibility
